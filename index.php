@@ -1,4 +1,6 @@
 <?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 
 $servername = 'localhost';
 $db = 'php_sql_js';
@@ -15,15 +17,22 @@ $result = $conn->query("
         SELECT MIN(id)
         FROM sessions
         GROUP BY start_time, session_configuration_id
-	),
-	MYSQLI_USE_RESULT
+	)
 ");
 
 if ($result) {
 	echo "Returned rows are: " . $result->num_rows;
+
+	while ($row = mysqli_fetch_assoc($result)) {
+		$data[] = $row;
+	}
+
+	echo "<pre>";
+	print_r($data);
+	echo "</pre>";
+
 	$result->free_result();
 }
-
 
 echo "Connection closed<br>";
 $conn->close();
