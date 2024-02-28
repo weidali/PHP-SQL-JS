@@ -13,7 +13,6 @@ $result = $dataHandler->getDuplicatedSessions($db);
 $count = 0;
 if ($result) {
 	$count = $result->num_rows;
-	echo "Duplicated Sessions rows are: " . $count . '<br>';
 
 	$i = 0;
 	$ids = '';
@@ -31,7 +30,12 @@ if ($result) {
 
 if ($count) {
 	$dataHandler->removeDuplicatedSessions($db);
+	echo "Duplicated Sessions rows are: " . $count . '<br>';
 	echo "Sessions with id: {$ids} was deleted<br>";
+} else {
+	echo 'Duplicated sessions not found<br>';
 }
+
+
 
 $db->close();
