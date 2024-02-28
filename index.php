@@ -1,17 +1,11 @@
 <?php
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
+require_once 'Database.php';
 
-$servername = 'localhost';
-$db = 'php_sql_js';
-$username = 'root';
-$password = 'root';
+use PhpSqlApp\Database;
 
-$conn = mysqli_connect($servername, $username, $password, $db) or die("Connection failed: " . mysqli_connect_error());
+$db = new Database();
 
-echo "Connected successfully <br>";
-
-$result = $conn->query("
+$result = $db->query("
     SELECT * FROM sessions
     WHERE id NOT IN (
         SELECT MIN(id)
@@ -34,5 +28,4 @@ if ($result) {
 	$result->free_result();
 }
 
-echo "Connection closed<br>";
-$conn->close();
+$db->close();
