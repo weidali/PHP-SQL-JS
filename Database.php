@@ -22,6 +22,12 @@ class Database
 		return $this->conn->query($sql);
 	}
 
+	public function error()
+	{
+		return mysqli_error($this->conn);
+	}
+
+
 	public function close()
 	{
 		$this->conn->close();

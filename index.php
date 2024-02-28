@@ -1,31 +1,37 @@
 <?php
 require_once 'Database.php';
+require_once 'DataHandler.php';
 
 use PhpSqlApp\Database;
+use PhpSqlApp\DataHandler;
 
 $db = new Database();
+$dataHandler = new DataHandler($db);
 
-$result = $db->query("
-    SELECT * FROM sessions
-    WHERE id NOT IN (
-        SELECT MIN(id)
-        FROM sessions
-        GROUP BY start_time, session_configuration_id
-	)
-");
+$result = $dataHandler->getDuplicatedSessions($db);
 
+$count = 0;
 if ($result) {
-	echo "Returned rows are: " . $result->num_rows;
+	$count = $result->num_rows;
+	echo "Duplicated Sessions rows are: " . $count . '<br>';
 
+	$i = 0;
+	$ids = '';
 	while ($row = mysqli_fetch_assoc($result)) {
-		$data[] = $row;
+		if (count($row) - 1 == $i) {
+			$ids .= $row['id'];
+		} else {
+			$ids .= $row['id'] . ', ';
+		}
+		$i++;
 	}
 
-	echo "<pre>";
-	print_r($data);
-	echo "</pre>";
-
 	$result->free_result();
+}
+
+if ($count) {
+	$dataHandler->removeDuplicatedSessions($db);
+	echo "Sessions with id: {$ids} was deleted<br>";
 }
 
 $db->close();
