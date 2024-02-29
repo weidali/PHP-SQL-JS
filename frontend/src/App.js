@@ -1,23 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import AddPostModal from './components/AddPostModal';
 
 function App() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleSendPost = (author, content) => {
+    console.log("Post was sended:");
+    console.log("Author:", author);
+    console.log("Content:", content);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <button onClick={handleOpenModal}>Открыть модальное окно</button>
+      <AddPostModal
+        modalOpen={isModalOpen}
+        handleSendPost={handleSendPost}
+        handleCloseModal={handleCloseModal}
+      />
     </div>
   );
 }
