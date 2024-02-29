@@ -39,4 +39,6 @@ if ($count) {
 	echo 'Duplicated sessions not found<br>';
 }
 
+$dataHandler->addUniqueIndexeToSessions();
+
 $db->close();

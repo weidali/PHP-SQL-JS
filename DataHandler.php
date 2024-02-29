@@ -53,4 +53,31 @@ class DataHandler
 
 		$this->db->query($sql) or trigger_error($this->db->error() . " " . $sql);
 	}
+
+	public function addUniqueIndexToSessions()
+	{
+		$isUniqueField = $this->isUniqueField('sessions', 'start_time', $this->db);
+		if (!$isUniqueField) {
+			$sql = "
+				ALTER TABLE sessions
+				ADD UNIQUE INDEX idx_unique_session (start_time)
+			";
+
+			$this->db->query($sql);
+		}
+	}
+
+	private function isUniqueField($tablename, $field, $connection)
+	{
+		$sql = "
+			SHOW INDEXES FROM $tablename 
+			WHERE Column_name='$field' AND Non_unique=0
+		";
+
+		$query = $connection->query($sql);
+		if (!mysqli_fetch_assoc($query)) {
+			return false;
+		}
+		return true;
+	}
 }
