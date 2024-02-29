@@ -43,4 +43,14 @@ class DataHandler
 
 		$this->db->query($sql) or trigger_error($this->db->error() . " " . $sql);
 	}
+
+	function removeDuplicatedSessionMembers($session_ids)
+	{
+		$sql = "
+			DELETE FROM session_members
+			WHERE session_id IN ($session_ids)
+        ";
+
+		$this->db->query($sql) or trigger_error($this->db->error() . " " . $sql);
+	}
 }

@@ -8,19 +8,19 @@ use PhpSqlApp\DataHandler;
 $db = new Database();
 $dataHandler = new DataHandler($db);
 
-$result = $dataHandler->getDuplicatedSessions($db);
+$result = $dataHandler->getDuplicatedSessions();
 
 $count = 0;
 if ($result) {
 	$count = $result->num_rows;
 
 	$i = 0;
-	$ids = '';
+	$session_ids = '';
 	while ($row = mysqli_fetch_assoc($result)) {
 		if (count($row) - 1 == $i) {
-			$ids .= $row['id'];
+			$session_ids .= $row['id'];
 		} else {
-			$ids .= $row['id'] . ', ';
+			$session_ids .= $row['id'] . ', ';
 		}
 		$i++;
 	}
@@ -29,13 +29,14 @@ if ($result) {
 }
 
 if ($count) {
-	$dataHandler->removeDuplicatedSessions($db);
+	$dataHandler->removeDuplicatedSessions();
+
 	echo "Duplicated Sessions rows are: " . $count . '<br>';
-	echo "Sessions with id: {$ids} was deleted<br>";
+	echo "Sessions with id: {$session_ids} was deleted<br>";
+
+	$dataHandler->removeDuplicatedSessionMembers($session_ids);
 } else {
 	echo 'Duplicated sessions not found<br>';
 }
-
-
 
 $db->close();
