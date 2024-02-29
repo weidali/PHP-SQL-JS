@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import AddPostModal from './components/AddPostModal';
+import AddPostModal from './components/AddPostModal.tsx';
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -20,7 +20,7 @@ function App() {
 
   return (
     <div className="App">
-      <button onClick={handleOpenModal}>Открыть модальное окно</button>
+      <button onClick={handleOpenModal}>Open modal</button>
       <AddPostModal
         modalOpen={isModalOpen}
         handleSendPost={handleSendPost}
